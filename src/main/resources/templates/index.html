@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${nome} + ' | Portfólio'">Portfólio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #222;
+            background: #fff;
+            line-height: 1.5;
+        }
+        body.escuro { background: #1b1b1b; color: #eee; }
+        header { text-align: center; border-bottom: 2px solid #2563eb; padding-bottom: 16px; }
+        nav a { margin: 0 10px; color: #2563eb; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+        h2 { color: #2563eb; margin-top: 32px; }
+        progress { width: 200px; }
+        .projeto { border: 1px solid #ccc; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+        input, textarea { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+        button { background: #2563eb; color: #fff; border: 0; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        .ok { background: #dcfce7; color: #166534; padding: 10px; border-radius: 4px; }
+        footer { text-align: center; margin-top: 40px; color: #777; }
+    </style>
+</head>
+<body>
+<header>
+    <h1 th:text="${nome}">Nome</h1>
+    <p th:text="${cargo}">Cargo</p>
+    <nav>
+        <a href="#sobre">Sobre</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#contato">Contato</a>
+    </nav>
+    <p><button id="tema" type="button">Alternar tema</button></p>
+</header>
+
+<section id="sobre">
+    <h2>Sobre mim</h2>
+    <p th:text="${sobre}">Texto sobre</p>
+</section>
+
+<section id="habilidades">
+    <h2>Habilidades</h2>
+    <p th:each="h : ${habilidades}">
+        <span th:text="${h.nome}">Skill</span><br>
+        <progress max="100" th:value="${h.nivel}"></progress>
+    </p>
+</section>
+
+<section id="projetos">
+    <h2>Projetos</h2>
+    <div class="projeto" th:each="p : ${projetos}">
+        <h3 th:text="${p.titulo}">Título</h3>
+        <p th:text="${p.descricao}">Descrição</p>
+        <small>Tecnologias: <span th:text="${#strings.listJoin(p.tecnologias, ', ')}">HTML</span></small>
+    </div>
+</section>
+
+<section id="contato">
+    <h2>Contato</h2>
+    <p class="ok" th:if="${confirmacao}" th:text="${confirmacao}">Mensagem enviada</p>
+    <form th:action="@{/contato}" method="post">
+        <input type="text" name="nome" placeholder="Seu nome" required>
+        <textarea name="mensagem" rows="4" placeholder="Sua mensagem" required></textarea>
+        <button type="submit">Enviar</button>
+    </form>
+    <p>E-mail: <span th:text="${email}">email</span></p>
+</section>
+
+<footer>
+    <p>&copy; <span th:text="${nome}">Nome</span></p>
+</footer>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
